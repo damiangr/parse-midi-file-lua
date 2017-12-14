@@ -1,5 +1,5 @@
 
-require("utils")
+local utils = require("utils")
 local loader = require("loader")
 local json = require("json")
 
@@ -11,16 +11,17 @@ local function convertMidiFile(midi)
 
 	local converted = {}
 	converted.header = {
-		PPQ = 480, bpm = 120
+		PPQ = loadResult.ppq
 	}
 	converted.tracks = {}
 
+	local tempo = loadResult.tempoEvents[1][3]
 	local function tickToSecond( ticks )
-		return ticks*loadResult.tempo[1][3]/(1000*1000*loadResult.tickPerBeat)
+		return ticks*tempo/(1000*1000*loadResult.ppq)
 	end
 
 	local trackCount = 0
-	for trackName,trackData in pairs(loadResult.tracksContainNoteEvent) do
+	for trackName,trackData in pairs(loadResult.tracks) do
 		local track = {notes = {}}
 		if (trackCount == mainTrack) then
 			table.insert(converted.tracks, 1, track)

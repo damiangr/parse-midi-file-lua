@@ -1,10 +1,9 @@
-
-module(...,package.seeall)
+local M = {}
 
 local maxDefault = 10
 local gap = "\t"
 
-function typeof(var)
+local function typeof(var)
 	local _type = type(var);
 	if(_type ~= "table" and _type ~= "userdata") then
 		return _type;
@@ -17,7 +16,7 @@ function typeof(var)
 	end
 end
 
-function tableToString(tableData,level,max,extra)
+local function tableToString(tableData,level,max,extra)
 	local result = ""
 	local margin = ""
 	local level = level or 1
@@ -82,11 +81,11 @@ function tableToString(tableData,level,max,extra)
 	return result
 end
 
-function printTable(table,level,max)
+function _G.printTable(table,level,max)
 	_G.print(tableToString(table,level,max))
 end
 
-function ensureFolderExists(dirPath)
+function M.ensureFolderExists(dirPath)
 	local path = system.pathForFile( dirPath, system.DocumentsDirectory)
 	lfs.chdir(system.pathForFile("",system.DocumentsDirectory))
 	local existed
@@ -100,3 +99,5 @@ function ensureFolderExists(dirPath)
 		lfs.mkdir(dirPath)
 	end
 end
+
+return M
