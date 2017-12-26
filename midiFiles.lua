@@ -58,5 +58,13 @@ return {
 	{
 		file = "HappyNewYear.mid",
 		mainTrack = 0
+	},
+	{
+		file = "twinkle.mid",
+		mainTrack = 0,
+	},
+	{
+		file = "Song From Secret Garden.mid",
+		mainTrack = 0,
 	}
 }
