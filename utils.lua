@@ -16,6 +16,14 @@ local function typeof(var)
 	end
 end
 
+_G.size = function( t )
+	local count = 0
+	for k,v in pairs(t) do
+		count = count + 1
+	end
+	return count
+end
+
 local function tableToString(tableData,level,max,extra)
 	local result = ""
 	local margin = ""

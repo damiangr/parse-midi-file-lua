@@ -8,6 +8,7 @@ local function convertMidiFile(midi)
 	local mainTrack = midi.mainTrack;
 	local path = system.pathForFile("files/"..file, system.ResourceDirectory)
 	local loadResult = loader.load(path)
+	print("file " .. file .. " has " .. size(loadResult.tracks) .. " tracks")
 
 	local converted = {}
 	converted.header = {
@@ -24,6 +25,7 @@ local function convertMidiFile(midi)
 	for trackName,trackData in pairs(loadResult.tracks) do
 		local track = {notes = {}}
 		if (trackCount == mainTrack) then
+			print("mainTrack name = ", trackName)
 			table.insert(converted.tracks, 1, track)
 		else
 			table.insert(converted.tracks, track)
@@ -46,5 +48,6 @@ local function convertMidiFile(midi)
 end
 
 for i,midi in ipairs(require("MidiFiles")) do
+	print("\nconvert file: ", midi.file)
 	convertMidiFile(midi)
 end

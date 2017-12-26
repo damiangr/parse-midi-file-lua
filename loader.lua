@@ -3,13 +3,6 @@ local M = {}
 local midi = require "midi"
 
 local tableInsert = table.insert
-local tableSize = function( t )
-	local count = 0
-	for k,v in pairs(t) do
-		count = count + 1
-	end
-	return count
-end
 
 local nameForUnnamedTrack = "anonyme_"
 
@@ -59,7 +52,7 @@ function M.load(path)
 	local trackNames = {}
 
 	for i,track in ipairs(score) do
-		print("\nBegin parse track number " .. i)
+		print("Begin parse track number " .. i)
 		if type(track) == "table" then
 			local trackName
 			local noteEvents = {}
@@ -82,7 +75,7 @@ function M.load(path)
 				end
 			end
 
-			if tableSize(trackChannels) > 0 then
+			if size(trackChannels) > 0 then
 				if not trackName or table.indexOf(trackNames, trackName) then
 					print("track has noteEvents but no trackName: assign trackName to ", nameForUnnamedTrack..i)
 					trackName = nameForUnnamedTrack..i
@@ -102,7 +95,7 @@ function M.load(path)
 		end
 	end
 
-	if tableSize(tracks) == 0 then
+	if size(tracks) == 0 then
 		return print("File has no note event")
 	end
 	
