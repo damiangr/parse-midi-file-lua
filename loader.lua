@@ -77,7 +77,7 @@ function M.load(path)
 
 			if size(trackChannels) > 0 then
 				if not trackName or table.indexOf(trackNames, trackName) then
-					print("track has noteEvents but no trackName: assign trackName to ", nameForUnnamedTrack..i)
+					print("track ".. i .." has noteEvents but no trackName: assign trackName to ", nameForUnnamedTrack..i)
 					trackName = nameForUnnamedTrack..i
 				end
 				tableInsert(trackNames, trackName)
