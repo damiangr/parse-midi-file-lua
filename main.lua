@@ -20,14 +20,11 @@ local function convertMidiFile(midi)
 		end
 	end
 
-	local trackCount = 0
+	local mainTrackName = "main"
 	local mainTrackNotes = {}
-	local mainTrackName
 	local checkPoints = {}
 	for trackName,trackData in pairs(loadResult.tracks) do
-		if trackCount == mainTrack then
-			mainTrackName = trackName
-			print("mainTrack name = ", trackName)
+		if mainTrackName == trackName then
 			for i,note in ipairs(trackData.noteEvents) do
 				mainTrackNotes[note[2]] = note
 				if (checkPointTimes[1] and checkPointTimes[1] < note[2]) then
@@ -37,7 +34,10 @@ local function convertMidiFile(midi)
 			end
 			break
 		end
-		trackCount = trackCount + 1
+	end
+
+	if (size(mainTrackNotes) == 0) then
+		print("Warning: midi file has no track named \""..mainTrackName.."\"")
 	end
 
 	local function isDuplicate( note )
