@@ -88,7 +88,7 @@ local function convertMidiFile(midi)
 			end
 			print("mainTrack checkPoint = ")
 			printTable(checkPoints)
-		else
+		elseif trackName ~= "trackpoints" then
 			table.insert(converted.tracks, track)
 		end
 		for i,note in ipairs(trackData.noteEvents) do
