@@ -12,7 +12,7 @@ local function convertMidiFile(midi)
 	print("\nfile " .. file .. " has " .. size(loadResult.tracks) .. " tracks")
 
 	---[[
-	local trackPoints = loadResult.tracks["trackpoints"]
+	local trackPoints = loadResult.tracks["checkpoints"]
 	local checkPointTimes = {}
 	if trackPoints then
 		for i,checkPoint in ipairs(trackPoints.noteEvents) do
@@ -88,7 +88,7 @@ local function convertMidiFile(midi)
 			end
 			print("mainTrack checkPoint = ")
 			printTable(checkPoints)
-		elseif trackName ~= "trackpoints" then
+		elseif trackName ~= "checkpoints" then
 			table.insert(converted.tracks, track)
 		end
 		for i,note in ipairs(trackData.noteEvents) do
@@ -96,6 +96,7 @@ local function convertMidiFile(midi)
 				midi = note[5],
 				time = tickToSecond(note[2]),
 				duration = tickToSecond(note[3]),
+				velocity = note[6],
 			} )
 		end
 	end
@@ -113,4 +114,4 @@ for i,midi in ipairs(require("MidiFiles")) do
 end
 --]]
 
-convertMidiFile({file = "Scaborough.mid", mainTrack = 1})
+convertMidiFile({file = "CanonInD.mid"})
