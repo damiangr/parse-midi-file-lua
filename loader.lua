@@ -71,11 +71,6 @@ function M.load(path)
 					trackName = event[3]
 					print("trackName = ", trackName)
 				elseif event[1] == "patch_change" then
-					-- local eventChannel = event[3]
-					-- if not patchChanges[eventChannel] then
-					-- 	patchChanges[eventChannel] = {}
-					-- end
-					-- tableInsert( patchChanges[eventChannel], event )
 					insertPatchChangeEvent(event)
 				elseif event[1] == "note" then
 					tableInsert( noteEvents, event )
@@ -105,9 +100,7 @@ function M.load(path)
 		end
 	end
 
-	if size(tracks) == 0 then
-		return print("File has no note event")
-	end
+	assert (size(tracks) > 0)
 	
 	table.sort(patchChanges,function(a,b) 
 		return a[2] < b[2]

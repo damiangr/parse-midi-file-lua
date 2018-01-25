@@ -80,6 +80,12 @@ local function convertMidiFile(midi)
 			program = event[4]
 		}
 	end
+	print("startup patch change events = ")
+	for i,v in ipairs(converted.patchChanges) do
+		if (v.time == 0) then
+			print("channel " .. v.channel .. ": program ".. v.program)
+		end
+	end
 	for trackName,trackData in pairs(loadResult.tracks) do
 		local track = {notes = {}}
 		if (trackName == mainTrackName) then
