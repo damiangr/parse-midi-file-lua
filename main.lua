@@ -63,15 +63,23 @@ local function convertMidiFile(midi)
 
 	local converted = {}
 	converted.header = {
-		PPQ = loadResult.ppq
+		PPQ = loadResult.ppq,
 	}
 	converted.tracks = {}
+	converted.patchChanges = {}
 
 	local tempo = loadResult.tempoEvents[1][3]
 	local function tickToSecond( ticks )
 		return ticks*tempo/(1000*1000*loadResult.ppq)
 	end
 
+	for i,event in ipairs(loadResult.patchChanges) do
+		converted.patchChanges[i] = {
+			time = tickToSecond(event[2]),
+			channel = event[3],
+			program = event[4]
+		}
+	end
 	for trackName,trackData in pairs(loadResult.tracks) do
 		local track = {notes = {}}
 		if (trackName == mainTrackName) then
@@ -97,6 +105,7 @@ local function convertMidiFile(midi)
 				time = tickToSecond(note[2]),
 				duration = tickToSecond(note[3]),
 				velocity = note[6],
+				channel = note[4]
 			} )
 		end
 	end
@@ -114,4 +123,4 @@ for i,midi in ipairs(require("MidiFiles")) do
 end
 --]]
 
-convertMidiFile({file = "CanonInD.mid"})
+convertMidiFile({file = "Because you live.mid"})

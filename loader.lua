@@ -48,8 +48,17 @@ function M.load(path)
 
 	local ppq
 	local tracks = {}
-	local patchChangesByChannel = {}
+	local patchChanges = {}
 	local trackNames = {}
+
+	local function insertPatchChangeEvent( event )
+		for i,patchChangeEvent in ipairs(patchChanges) do
+			if patchChangeEvent[2] == event[2] and patchChangeEvent[3] == event[3] and patchChangeEvent[4] == event[4] then
+				return
+			end
+		end
+		table.insert(patchChanges, event)
+	end
 
 	for i,track in ipairs(score) do
 		print("Begin parse track number " .. i)
@@ -62,11 +71,12 @@ function M.load(path)
 					trackName = event[3]
 					print("trackName = ", trackName)
 				elseif event[1] == "patch_change" then
-					local eventChannel = event[3]
-					if not patchChangesByChannel[eventChannel] then
-						patchChangesByChannel[eventChannel] = {}
-					end
-					tableInsert( patchChangesByChannel[eventChannel], event )
+					-- local eventChannel = event[3]
+					-- if not patchChanges[eventChannel] then
+					-- 	patchChanges[eventChannel] = {}
+					-- end
+					-- tableInsert( patchChanges[eventChannel], event )
+					insertPatchChangeEvent(event)
 				elseif event[1] == "note" then
 					tableInsert( noteEvents, event )
 					if not table.indexOf(trackChannels, event[4]) then
@@ -99,15 +109,13 @@ function M.load(path)
 		return print("File has no note event")
 	end
 	
-	for channel,patchChangeEvents in pairs(patchChangesByChannel) do
-		table.sort(patchChangeEvents,function(a,b) 
-			return a[2] < b[2]
-		end)
-	end
+	table.sort(patchChanges,function(a,b) 
+		return a[2] < b[2]
+	end)
 
 	return {
 		ppq = ppq,
-		patchChangesByChannel = patchChangesByChannel,
+		patchChanges = patchChanges,
 		tracks = tracks,
 		tempoEvents = getTempoEvents(score),
 	}

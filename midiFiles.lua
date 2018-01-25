@@ -49,5 +49,9 @@ return {
 	},
 	{
 		file = "Scaborough.mid",
+	},
+	{
+		file = "Because you live.mid",
 	}
+}
 }
